@@ -1,5 +1,5 @@
 [package]
-name = "minigrep"
+name = "minigrep-new"
 version = "0.1.0"
 edition = "2021"
 authors = ["Murtaza Nazar <mkm9284@gmail.con>"]
