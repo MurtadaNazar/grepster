@@ -1,4 +1,4 @@
-name: Rust CI
+name: Rust CI & Release
 
 on:
   push:
@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Cache Cargo registry
         uses: actions/cache@v3
         with:
@@ -22,6 +23,7 @@ jobs:
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.toml') }}
           restore-keys: |
             ${{ runner.os }}-cargo-registry-
+
       - name: Cache Cargo build
         uses: actions/cache@v3
         with:
@@ -29,6 +31,7 @@ jobs:
           key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.toml') }}
           restore-keys: |
             ${{ runner.os }}-cargo-target-
+
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -48,6 +51,7 @@ jobs:
         with:
           command: fmt
           args: --all -- --check
+
       - name: Run cargo clippy (check linting)
         uses: actions-rs/cargo@v1
         with:
@@ -72,15 +76,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Install cargo-tarpaulin
         uses: actions-rs/install@v0.1
         with:
           crate: cargo-tarpaulin
           version: latest
+
       - name: Generate code coverage
         uses: actions-rs/cargo@v1
         with:
           command: tarpaulin
           args: --out Xml
+
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v3
+
+  release:
+    name: Automated Release Tagging and Publishing
+    needs: [test, lint, coverage]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Git for tagging
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install cargo-release
+        run: cargo install cargo-release
+
+      - name: Run cargo release (bump, tag, publish)
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+        run: cargo release patch --no-confirm --publish
