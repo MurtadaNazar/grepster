@@ -178,17 +178,24 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         };
 
         let results = if config.use_regex {
-            search_with_regex(&config.query, &contents, &file_path, config.ignore_case)?
+            search_with_regex(&config.query, &contents, file_path, config.ignore_case)?
         } else if config.ignore_case {
-            search_case_insensitive(&config.query, &contents, &file_path)
+            search_case_insensitive(&config.query, &contents, file_path)
         } else {
-            search(&config.query, &contents, &file_path)
+            search(&config.query, &contents, file_path)
         };
 
         if !results.is_empty() {
             found_results = true;
+
+            // Only print file header if searching multiple files
             if config.file_paths.len() > 1 {
-                println!("File: {}", file_path);
+                // Extract just the filename for cleaner output
+                let filename = std::path::Path::new(file_path)
+                    .file_name()
+                    .and_then(|f| f.to_str())
+                    .unwrap_or(file_path);
+                println!("File: {}", filename);
             }
 
             for result in results {
@@ -200,6 +207,11 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
                 } else {
                     println!("{}", result.line_content);
                 }
+            }
+
+            // Add a blank line between files for better readability
+            if config.file_paths.len() > 1 {
+                println!();
             }
         }
     }

@@ -116,5 +116,5 @@ fn print_config(config: &Config) {
             "no"
         }
     );
-    eprintln!("");
+    eprintln!();
 }

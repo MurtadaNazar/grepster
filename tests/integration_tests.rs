@@ -130,8 +130,21 @@ fn test_cli_multiple_files_with_results() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8(output.stdout).unwrap();
-    assert!(stdout.contains("File: file1.txt"));
-    assert!(stdout.contains("File: file2.txt"));
+
+    // Extract just the filename from the path for comparison
+    let file1_name = std::path::Path::new(&file1)
+        .file_name()
+        .unwrap()
+        .to_str()
+        .unwrap();
+    let file2_name = std::path::Path::new(&file2)
+        .file_name()
+        .unwrap()
+        .to_str()
+        .unwrap();
+
+    assert!(stdout.contains(&format!("File: {}", file1_name)));
+    assert!(stdout.contains(&format!("File: {}", file2_name)));
     assert!(stdout.contains("Contains rust"));
     assert!(stdout.contains("Also contains rust"));
 }
