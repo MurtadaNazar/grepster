@@ -1,6 +1,6 @@
-//! # Minigrep CLI
+//! # Grepster CLI
 //!
-//! This is the command-line interface for the `minigrep` library.
+//! This is the command-line interface for the `grepster` library.
 //! It handles argument parsing and error reporting for the search functionality.
 //!
 //! ## Features
@@ -14,26 +14,26 @@
 //!
 //! ```bash
 //! # Basic usage
-//! $ minigrep <pattern> <file1> [file2 ...]
+//! $ grepster <pattern> <file1> [file2 ...]
 //!
 //! # Case-insensitive search
-//! $ IGNORE_CASE=1 minigrep <pattern> <file1> [file2 ...]
+//! $ IGNORE_CASE=1 grepster <pattern> <file1> [file2 ...]
 //!
 //! # Regular expression search
-//! $ USE_REGEX=1 minigrep <pattern> <file1> [file2 ...]
+//! $ USE_REGEX=1 grepster <pattern> <file1> [file2 ...]
 //!
 //! # Display line numbers
-//! $ SHOW_LINE_NUMBERS=1 minigrep <pattern> <file1> [file2 ...]
+//! $ SHOW_LINE_NUMBERS=1 grepster <pattern> <file1> [file2 ...]
 //!
 //! # Combine options
-//! $ IGNORE_CASE=1 USE_REGEX=1 SHOW_LINE_NUMBERS=1 minigrep <pattern> <file1> [file2 ...]
+//! $ IGNORE_CASE=1 USE_REGEX=1 SHOW_LINE_NUMBERS=1 grepster <pattern> <file1> [file2 ...]
 //! ```
-use minigrep::run;
-use minigrep::Config;
+use grepster::run;
+use grepster::Config;
 use std::env;
 use std::process;
 
-/// The main entry point for the minigrep command line tool.
+/// The main entry point for the grepster command line tool.
 ///
 /// This function parses command line arguments using `env::args()`,
 /// constructs a `Config` object, and executes the search operation.
@@ -44,13 +44,13 @@ use std::process;
 ///
 /// ```bash
 /// # Search for "pattern" in file.txt (case-sensitive)
-/// $ minigrep pattern file.txt
+/// $ grepster pattern file.txt
 ///
 /// # Search for "pattern" in multiple files (case-insensitive)
-/// $ IGNORE_CASE=1 minigrep pattern file1.txt file2.txt
+/// $ IGNORE_CASE=1 grepster pattern file1.txt file2.txt
 ///
 /// # Search using regex with line numbers
-/// $ USE_REGEX=1 SHOW_LINE_NUMBERS=1 minigrep "^[a-z]+" file.txt
+/// $ USE_REGEX=1 SHOW_LINE_NUMBERS=1 grepster "^[a-z]+" file.txt
 /// ```
 fn main() {
     // Print usage information if no arguments are provided
@@ -78,16 +78,16 @@ fn main() {
 
 /// Print usage information to stdout
 fn print_usage() {
-    println!("Usage: minigrep <pattern> <file1> [file2 ...]");
+    println!("Usage: grepster <pattern> <file1> [file2 ...]");
     println!("Environment variables:");
     println!("  IGNORE_CASE=1        Perform case-insensitive search");
     println!("  USE_REGEX=1          Treat pattern as a regular expression");
     println!("  SHOW_LINE_NUMBERS=1  Display line numbers in search results");
     println!("\nExamples:");
-    println!("  minigrep rust file.txt                  # Search for 'rust' in file.txt");
-    println!("  IGNORE_CASE=1 minigrep rust *.rs        # Case-insensitive search for 'rust' in .rs files");
+    println!("  grepster rust file.txt                  # Search for 'rust' in file.txt");
+    println!("  IGNORE_CASE=1 grepster rust *.rs        # Case-insensitive search for 'rust' in .rs files");
     println!(
-        "  USE_REGEX=1 minigrep '^fn\\s+\\w+' *.rs  # Search for function definitions in .rs files"
+        "  USE_REGEX=1 grepster '^fn\\s+\\w+' *.rs  # Search for function definitions in .rs files"
     );
 }
 

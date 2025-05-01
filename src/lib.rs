@@ -1,6 +1,6 @@
-//! # Minigrep
+//! # Grepster
 //!
-//! `minigrep` is a simple command-line utility for searching text in files.
+//! `grepster` is a simple command-line utility for searching text in files.
 //! It allows case-sensitive and case-insensitive searches controlled via environment variables.
 //! The enhanced version adds support for multiple files, regex pattern matching, and line number output.
 //!
@@ -17,7 +17,7 @@
 //!
 //! ```no_run
 //! use std::env;
-//! use minigrep::{Config, run};
+//! use grepster::{Config, run};
 //!
 //! let config = Config::build(env::args()).unwrap_or_else(|err| {
 //!     eprintln!("Problem parsing arguments: {err}");
@@ -35,7 +35,7 @@ use std::env;
 use std::error::Error;
 use std::fs;
 
-/// Configuration for the `minigrep` application.
+/// Configuration for the `grepster` application.
 ///
 /// This structure holds all the parameters needed to perform a search operation,
 /// including the query string, file path(s), and various search options.
@@ -95,7 +95,7 @@ impl Config {
     ///
     /// ```no_run
     /// use std::env;
-    /// use minigrep::Config;
+    /// use grepster::Config;
     ///
     /// let args = vec![
     ///     String::from("program_name"),
@@ -149,7 +149,7 @@ impl Config {
 /// # Examples
 ///
 /// ```no_run
-/// use minigrep::{Config, run};
+/// use grepster::{Config, run};
 ///
 /// let config = Config {
 ///     query: String::from("pattern"),
@@ -240,7 +240,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// # Examples
 ///
 /// ```
-/// use minigrep::{search, SearchResult};
+/// use grepster::{search, SearchResult};
 ///
 /// let query = "duct";
 /// let contents = "\
@@ -289,7 +289,7 @@ pub fn search<'a>(query: &str, contents: &'a str, file_path: &'a str) -> Vec<Sea
 /// # Examples
 ///
 /// ```
-/// use minigrep::{search_case_insensitive, SearchResult};
+/// use grepster::{search_case_insensitive, SearchResult};
 ///
 /// let query = "rUsT";
 /// let contents = "\
@@ -345,7 +345,7 @@ pub fn search_case_insensitive<'a>(
 /// # Examples
 ///
 /// ```
-/// use minigrep::search_with_regex;
+/// use grepster::search_with_regex;
 ///
 /// let pattern = r"\w+:\s*\d+";  // Match word followed by colon and number
 /// let contents = "\

@@ -1,12 +1,12 @@
 [package]
-name = "minigrep-new"
+name = "grepster"
 version = "0.1.0"
 edition = "2021"
 authors = ["Murtaza Nazar <mkm9284@gmail.con>"]
 description = "A simple command-line tool for searching text in files"
 license = "MIT"
-repository = "https://github.com/MurtadaNazar/minigrep"
-documentation = "https://docs.rs/minigrep"
+repository = "https://github.com/MurtadaNazar/grepster"
+documentation = "https://docs.rs/grepster"
 readme = "README.md"
 keywords = ["cli", "search", "grep", "text"]
 categories = ["command-line-utilities", "text-processing"]

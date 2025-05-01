@@ -1,4 +1,4 @@
-# Minigrep
+# Grepster
 
 A simple command-line utility for searching text in files, inspired by the classic Unix grep tool.
 
@@ -16,14 +16,14 @@ A simple command-line utility for searching text in files, inspired by the class
 ### From crates.io
 
 ```bash
-cargo install minigrep
+cargo install grepster
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/MurtadaNazar/minigrep.git
-cd minigrep
+git clone https://github.com/MurtadaNazar/grepster.git
+cd grepster
 cargo install --path .
 ```
 
@@ -32,37 +32,37 @@ cargo install --path .
 ### Basic search (case-sensitive)
 
 ```bash
-minigrep pattern file.txt
+grepster pattern file.txt
 ```
 
 ### Search multiple files
 
 ```bash
-minigrep pattern file1.txt file2.txt file3.txt
+grepster pattern file1.txt file2.txt file3.txt
 ```
 
 ### Case-insensitive search
 
 ```bash
-IGNORE_CASE=1 minigrep pattern file.txt
+IGNORE_CASE=1 grepster pattern file.txt
 ```
 
 ### Regular expression search
 
 ```bash
-USE_REGEX=1 minigrep "^[A-Z].*\d+$" file.txt
+USE_REGEX=1 grepster "^[A-Z].*\d+$" file.txt
 ```
 
 ### Display line numbers
 
 ```bash
-SHOW_LINE_NUMBERS=1 minigrep pattern file.txt
+SHOW_LINE_NUMBERS=1 grepster pattern file.txt
 ```
 
 ### Combine options
 
 ```bash
-IGNORE_CASE=1 USE_REGEX=1 SHOW_LINE_NUMBERS=1 minigrep pattern file.txt
+IGNORE_CASE=1 USE_REGEX=1 SHOW_LINE_NUMBERS=1 grepster pattern file.txt
 ```
 
 ## Examples
@@ -70,34 +70,34 @@ IGNORE_CASE=1 USE_REGEX=1 SHOW_LINE_NUMBERS=1 minigrep pattern file.txt
 Search for "Rust" in a file named "programming.txt":
 
 ```bash
-minigrep Rust programming.txt
+grepster Rust programming.txt
 ```
 
 Search for "rust" in multiple files, ignoring case:
 
 ```bash
-IGNORE_CASE=1 minigrep rust *.txt
+IGNORE_CASE=1 grepster rust *.txt
 ```
 
 Search for lines starting with a function definition in Rust files:
 
 ```bash
-USE_REGEX=1 minigrep "^fn\s+\w+" *.rs
+USE_REGEX=1 grepster "^fn\s+\w+" *.rs
 ```
 
 Search for error lines in log files and show line numbers:
 
 ```bash
-SHOW_LINE_NUMBERS=1 minigrep error *.log
+SHOW_LINE_NUMBERS=1 grepster error *.log
 ```
 
 ## Using as a Library
 
-You can also use minigrep as a library in your Rust projects:
+You can also use grepster as a library in your Rust projects:
 
 ```rust
 use std::env;
-use minigrep::{Config, run};
+use grepster::{Config, run};
 
 fn main() {
     let config = Config::build(env::args()).unwrap_or_else(|err| {
