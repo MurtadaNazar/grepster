@@ -1,0 +1,21 @@
+# Rust/Cargo
+/target
+**/*.rs.bk
+Cargo.lock # Only ignore if you're publishing a library (not a binary tool)
+
+# IDEs/editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs / temp files
+*.log
+output.txt
+poem.txt
