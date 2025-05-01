@@ -88,10 +88,6 @@ jobs:
         with:
           command: tarpaulin
           args: --out Xml
-
-      - name: Upload to codecov.io
-        uses: codecov/codecov-action@v3
-
   release:
     name: Automated Release Tagging and Publishing
     needs: [test, lint, coverage]
