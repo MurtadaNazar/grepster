@@ -10,28 +10,25 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  test:
-    name: Test
+  setup:
+    name: Set up Rust Toolchain
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+      - name: Cache Cargo build
+        uses: actions/cache@v3
         with:
-          command: test
-          args: --all
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+          path: target
+          key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-target-
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -39,28 +36,42 @@ jobs:
           toolchain: stable
           override: true
           components: clippy, rustfmt
-      - name: Run cargo fmt
+
+  lint:
+    name: Run Linter (Clippy and Formatter)
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run cargo fmt (check formatting)
         uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
-      - name: Run cargo clippy
+      - name: Run cargo clippy (check linting)
         uses: actions-rs/cargo@v1
         with:
           command: clippy
           args: -- -D warnings
 
-  coverage:
-    name: Code Coverage
+  test:
+    name: Run Tests
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
+          command: test
+          args: --all
+
+  coverage:
+    name: Code Coverage
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Install cargo-tarpaulin
         uses: actions-rs/install@v0.1
         with:

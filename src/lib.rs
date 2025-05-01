@@ -164,12 +164,16 @@ impl Config {
 /// }
 /// ```
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let mut found_errors = false;
+    let mut found_results = false;
+
     for file_path in &config.file_paths {
         let contents = match fs::read_to_string(file_path) {
             Ok(contents) => contents,
             Err(e) => {
                 eprintln!("Error reading file {}: {}", file_path, e);
-                continue; // Skip to the next file on error
+                found_errors = true;
+                continue;
             }
         };
 
@@ -181,23 +185,32 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
             search(&config.query, &contents, &file_path)
         };
 
-        if config.file_paths.len() > 1 && !results.is_empty() {
-            println!("File: {}", file_path);
-        }
+        if !results.is_empty() {
+            found_results = true;
+            if config.file_paths.len() > 1 {
+                println!("File: {}", file_path);
+            }
 
-        for result in results {
-            if config.show_line_numbers {
-                println!(
-                    "{}:{}: {}",
-                    result.file_path, result.line_number, result.line_content
-                );
-            } else {
-                println!("{}", result.line_content);
+            for result in results {
+                if config.show_line_numbers {
+                    println!(
+                        "{}:{}: {}",
+                        result.file_path, result.line_number, result.line_content
+                    );
+                } else {
+                    println!("{}", result.line_content);
+                }
             }
         }
     }
 
-    Ok(())
+    if found_errors {
+        Err("One or more files could not be read".into())
+    } else if !found_results {
+        Err("No matches found".into())
+    } else {
+        Ok(())
+    }
 }
 
 /// Performs a case-sensitive search for a query in the contents.
