@@ -118,4 +118,4 @@ jobs:
       - name: Run cargo release (bump, tag, publish)
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
-        run: cargo release patch --no-confirm --publish
+        run: cargo release patch --no-confirm --publish --execute

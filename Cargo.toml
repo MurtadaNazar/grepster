@@ -11,6 +11,12 @@ readme = "README.md"
 keywords = ["cli", "search", "grep", "text"]
 categories = ["command-line-utilities", "text-processing"]
 
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+
 [dependencies]
 regex = "1.9.5"
 
