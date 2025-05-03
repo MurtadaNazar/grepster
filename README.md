@@ -2,6 +2,8 @@
 
 A simple command-line utility for searching text in files, inspired by the classic Unix grep tool.
 
+[![codecov](https://codecov.io/gh/MurtadaNazar/grepster/graph/badge.svg?token=79UFUVDFKT)](https://codecov.io/gh/MurtadaNazar/grepster)
+
 ## Features
 
 - Search for text patterns in files
