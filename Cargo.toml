@@ -1,6 +1,6 @@
 [package]
 name = "grepster"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Murtaza Nazar <mkm9284@gmail.con>"]
 description = "A simple command-line tool for searching text in files"
