@@ -87,7 +87,13 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: tarpaulin
-          args: --out Xml
+          args: --out Html
+
+          # TODO: ADD CODECOV_TOKEN TO SECRETS
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
   release:
     name: Automated Release Tagging and Publishing
     needs: [test, lint, coverage]
